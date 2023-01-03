@@ -19,18 +19,11 @@ class Board
             }
         }   
 
-    }
 
-    function set($row, $col, $value)
-    {
-        $position= $row.$col;
-        $this->squares[$position]=$value;
-    }     
+
+    }
 
 }
 
 $board= new Board; 
-$board->set(1,'a',5);
-var_dump($board);
 
-require 'Print.php';

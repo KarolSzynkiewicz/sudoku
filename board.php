@@ -71,13 +71,13 @@ class Board{
 
     function WriteIfCertain($row, $col){  
         $legal= $this-> checkLegalMoves($row, $col);
-if ($legal!==null) {
+    if ($legal!==null) {
     $legal=array_values($legal);// resets the index
 
     if (sizeof($legal)==1) {
         $this->board[$row][$col]= $legal[0];
     }
-}
+    }
     }
 
     function checkTheBoard(){
@@ -89,6 +89,7 @@ if ($legal!==null) {
             
         }
 
+    
     }
 
 }
@@ -107,7 +108,5 @@ for ($row=0;$row<=8;$row++){
     
     echo '<br>';
 }
-
-
 
 

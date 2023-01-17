@@ -35,20 +35,12 @@ class Board{
         }
     }
 
-
-        
-    function checkIfEmpty($row,$col){
-        if ($this->board[$row][$col]==0){
-            return [true, $row, $col];
-        } else return [false, $row, $col];
-    }
-
-    function FindFirstEmpty($board){
+    function FindFirstEmpty($boardParam){
         $this->newBoard=$boardParam;
         for ($row=0; $row<=8; $row++){
             for ($col=0;$col<=8;$col++){
                 if ($this->newBoard[$row][$col]==0){
-                    return ([$row,$col]);
+                    return (['row'=>$row,'col'=>$col]);
                 };
             }
            
@@ -89,9 +81,8 @@ class Board{
 
     function checkLegalMoves($row, $col)
     {
-        if ($this->checkIfEmpty($row, $col)==true){
+        
             $options= [1,2,3,4,5,6,7,8,9];
-
 
             $illegalCol= $this->checkCol($row, $col);
             $illegalCol= $illegalCol[0];
@@ -103,42 +94,16 @@ class Board{
             $illegalMoves= array_unique (array_merge ($illegalCol, $illegalRow,$illegalSquare));
             $legal = array_diff($options, $illegalMoves);
             return [$legal, $row, $col]; // returns array of legal moves for $row $col position.
-        };
+        
     
     }
     function newBoard($board){
-        for ($row = 0 ;$row<=8; $row++){  //each row level 
-            
-            for ($col=0; $col<=8; $col++){ //each cell in the oryginal board level
-                
-                $isEmpty=$this->checkIfEmpty($row, $col);
-                $isEmpty= $isEmpty[0];
-                if ($isEmpty == true){
-                    $isPossible = $this->checkLegalMoves($row, $col);
-                    $isPossible = $isPossible[0];
-                    foreach($isPossible as $PossibleValue){ //each possible value for given cell
-                        
-                        
-                        echo 'BOARD simulation row - col -value '.$row.'-'.$col.'-'.$PossibleValue.'<br>';
-                       if (count($this->newBoard)==0){
-                        $this->newBoard=$this->board;
-                       }
-                       $this->newBoard[$row][$col]=$PossibleValue;
-                       $this->showTable($this->newBoard);
-                       
-                       
-                     
-                    }
-                    
-                } 
-            }
-        }
-
+        $cell=$this->FindFirstEmpty($this->board);
     } 
     
 }
 
 $board= new Board() ;
-$board->newBoard($board->board);
+var_dump( $board->FindFirstEmpty($board->board));
 
 

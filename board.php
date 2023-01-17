@@ -15,20 +15,54 @@ class Board{
         [0,4,0,   0,5,0,  0,3,6],
         [7,0,3,   0,1,8,  0,0,0],
     ];
+
+    public $newBoard = array();
+
+//    public function __consturct($board, $newBoardName){
+//       echo "Powstał nowy obiekt $newBoardName";
+//        $this->board=$board;
+//        $this->board[$newBoardName[0]][$newBoardName[1]]=$newBoardName[2];
+//
+//     }
+
+    function showTable($boardParam){
+        $this->newBoard=$boardParam;
+        for ($row=0; $row<=8; $row++){
+            for ($col=0;$col<=8;$col++){
+                echo $this->newBoard[$row][$col];
+            }
+            echo '<br>';
+        }
+    }
+
+
+        
     function checkIfEmpty($row,$col){
         if ($this->board[$row][$col]==0){
-            return true;
-        } else return false;
+            return [true, $row, $col];
+        } else return [false, $row, $col];
+    }
+
+    function FindFirstEmpty($board){
+        $this->newBoard=$boardParam;
+        for ($row=0; $row<=8; $row++){
+            for ($col=0;$col<=8;$col++){
+                if ($this->newBoard[$row][$col]==0){
+                    return ([$row,$col]);
+                };
+            }
+           
+        }
     }
 
     function checkRow($row,$col){
         $usedInTheRow=$this->board[$row];
-        return $usedInTheRow;  //returns array 
+        return [$usedInTheRow, $row, $col];  //returns array 
     }
     
     function checkCol($row,$col){
         $usedInTheCol=array_column($this->board, $col);
-        return $usedInTheCol;
+        return [$usedInTheCol, $row, $col];
     }
     function checkSquare($row, $col){
         $squareStartRow= $row-$row%3;
@@ -49,7 +83,7 @@ class Board{
         ];
 
 
-        return $usedinTheSquare;
+        return [$usedinTheSquare, $row, $col];
 
     }
 
@@ -60,53 +94,51 @@ class Board{
 
 
             $illegalCol= $this->checkCol($row, $col);
+            $illegalCol= $illegalCol[0];
             $illegalRow= $this->checkRow($row, $col);
+            $illegalRow= $illegalRow[0];
             $illegalSquare=$this->checkSquare($row, $col);
+            $illegalSquare= $illegalSquare[0];
 
             $illegalMoves= array_unique (array_merge ($illegalCol, $illegalRow,$illegalSquare));
             $legal = array_diff($options, $illegalMoves);
-            return $legal;
+            return [$legal, $row, $col]; // returns array of legal moves for $row $col position.
         };
-    }   
-
-    function WriteIfCertain($row, $col){  
-        $legal= $this-> checkLegalMoves($row, $col);
-    if ($legal!==null) {
-    $legal=array_values($legal);// resets the index
-
-    if (sizeof($legal)==1) {
-        $this->board[$row][$col]= $legal[0];
+    
     }
-    }
-    }
-
-    function checkTheBoard(){
-        for ($row=0;$row<=8;$row++){
-            for ($col=0;$col<=8;$col++){
-        
-                $this->WriteIfCertain($row,$col);
-            }
+    function newBoard($board){
+        for ($row = 0 ;$row<=8; $row++){  //each row level 
             
+            for ($col=0; $col<=8; $col++){ //each cell in the oryginal board level
+                
+                $isEmpty=$this->checkIfEmpty($row, $col);
+                $isEmpty= $isEmpty[0];
+                if ($isEmpty == true){
+                    $isPossible = $this->checkLegalMoves($row, $col);
+                    $isPossible = $isPossible[0];
+                    foreach($isPossible as $PossibleValue){ //each possible value for given cell
+                        
+                        
+                        echo 'BOARD simulation row - col -value '.$row.'-'.$col.'-'.$PossibleValue.'<br>';
+                       if (count($this->newBoard)==0){
+                        $this->newBoard=$this->board;
+                       }
+                       $this->newBoard[$row][$col]=$PossibleValue;
+                       $this->showTable($this->newBoard);
+                       
+                       
+                     
+                    }
+                    
+                } 
+            }
         }
 
+    } 
     
-    }
-
 }
 
-$board= new Board;
-
-//$board->WriteIfCertain(6,4);
-$board->checkTheBoard();
-$board->checkTheBoard();
-
-for ($row=0;$row<=8;$row++){
-    for ($col=0;$col<=8;$col++){
-
-        echo " __ ".$board->board[$row][$col]." __ ";
-    }
-    
-    echo '<br>';
-}
+$board= new Board() ;
+$board->newBoard($board->board);
 
 

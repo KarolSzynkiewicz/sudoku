@@ -1,7 +1,8 @@
 <?php 
 
 class Board{
-    public $board= //populate with your data enter 0 if field is empty
+    public $board=  //populate with your data 
+                    //enter 0 if field is empty
     [
         [0,0,0,   2,6,0,  7,0,1],
         [6,8,0,   0,7,0,  0,9,0],
@@ -16,45 +17,39 @@ class Board{
         [7,0,3,   0,1,8,  0,0,0],
     ];
 
-    public $newBoard = array();
+    public $newBoard = array(); // to be populated basing on oryginal board
 
-//    public function __consturct($board, $newBoardName){
-//       echo "Powstał nowy obiekt $newBoardName";
-//        $this->board=$board;
-//        $this->board[$newBoardName[0]][$newBoardName[1]]=$newBoardName[2];
-//
-//     }
 
-    function showTable($boardParam){
-        $this->newBoard=$boardParam;
+    function showTable($board){ //shows table form param
+        $this->newBoard=$board;
         for ($row=0; $row<=8; $row++){
             for ($col=0;$col<=8;$col++){
                 echo $this->newBoard[$row][$col];
             }
             echo '<br>';
-        }
+        } echo '<hr>';
+        
     }
 
-    function FindFirstEmpty($boardParam){
-        $this->newBoard=$boardParam;
+    function FindFirstEmpty($board){
+        $this->newBoard=$board;
         for ($row=0; $row<=8; $row++){
             for ($col=0;$col<=8;$col++){
                 if ($this->newBoard[$row][$col]==0){
                     return (['row'=>$row,'col'=>$col]);
                 };
             }
-           
         }
     }
 
     function checkRow($row,$col){
         $usedInTheRow=$this->board[$row];
-        return [$usedInTheRow, $row, $col];  //returns array 
+        return $usedInTheRow;   
     }
     
     function checkCol($row,$col){
         $usedInTheCol=array_column($this->board, $col);
-        return [$usedInTheCol, $row, $col];
+        return $usedInTheCol;
     }
     function checkSquare($row, $col){
         $squareStartRow= $row-$row%3;
@@ -75,7 +70,7 @@ class Board{
         ];
 
 
-        return [$usedinTheSquare, $row, $col];
+        return $usedinTheSquare;
 
     }
 
@@ -85,25 +80,56 @@ class Board{
             $options= [1,2,3,4,5,6,7,8,9];
 
             $illegalCol= $this->checkCol($row, $col);
-            $illegalCol= $illegalCol[0];
             $illegalRow= $this->checkRow($row, $col);
-            $illegalRow= $illegalRow[0];
             $illegalSquare=$this->checkSquare($row, $col);
-            $illegalSquare= $illegalSquare[0];
 
             $illegalMoves= array_unique (array_merge ($illegalCol, $illegalRow,$illegalSquare));
             $legal = array_diff($options, $illegalMoves);
-            return [$legal, $row, $col]; // returns array of legal moves for $row $col position.
+            return $legal; // returns array of legal moves
         
-    
     }
+
+    function isItSolved ($board) {
+        $this->newBoard=$board;
+        for ($row=0; $row<=8; $row++){
+            for ($col=0;$col<=8;$col++){
+                if ($this->newBoard[$row][$col]==0){
+                    return false;
+                } 
+                if ($this->newBoard[$row][$col]!==0 && $row== 8 && $col == 8){
+                    return true;
+                }
+            }        
+        }
+    }
+
     function newBoard($board){
-        $cell=$this->FindFirstEmpty($this->board);
+        $this->newBoard=$board;
+        $cell= $this->FindFirstEmpty($this->newBoard);
+        $row  = $cell['row'];
+        $col  =$cell['col'];
+
+        $legalMoves= $this->checkLegalMoves($row, $col);
+        
+        foreach ($legalMoves as $legalMove)
+        {
+            $this->newBoard[$row][$col]=$legalMove;
+            $solved= $this->isItSolved($this->newBoard);
+            if ($solved == false){
+            $this->newBoard($this->newBoard);
+            } else {
+                $this->showTable($this->newBoard);
+                break;
+            }
+
+        }
+
     } 
     
 }
 
 $board= new Board() ;
-var_dump( $board->FindFirstEmpty($board->board));
+$board->newBoard($board->board);
+
 
 

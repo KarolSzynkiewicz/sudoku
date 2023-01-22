@@ -21,27 +21,6 @@ class Board
     public $solvedBoard = array();
 
 
-    function showTable($solvedboard, $board)
-    {
-
-        for ($row = 0; $row <= 8; $row++) {
-            for ($col = 0; $col <= 8; $col++) {
-               
-                if ($this->board[$row][$col] !== 0) {
-                    echo '<span style="color: red;">'.$this->board[$row][$col].'</span>';
-                } else{
-                    echo $solvedboard[$row][$col];
-                }
-
-                if ($col==2||$col ==5){
-                    echo' &nbsp &nbsp&nbsp   ';
-                }
-
-            }
-            echo '<br>';
-        }
-    }
-
     function solve($board)
     {
         include 'helpers.php';
@@ -65,13 +44,18 @@ class Board
             }
         }
     }
+
+    function run(){
+        if(isset($_POST['go']))
+        {
+        ($this->solve($this->board));
+        } 
+
+    }
+
 }
 
 
-
-$board = new board;
-$board->solve($board->board);
-$board->showTable($board->board, $board->solvedBoard);
 
 
 

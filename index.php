@@ -1,7 +1,8 @@
 <?php
 include_once('board.php');
 $board = new board;
-$board->solve($board->board);
+$board->run();
+
 
 
 ?>
@@ -11,112 +12,32 @@ $board->solve($board->board);
 <link rel="stylesheet" href="mystyle.css">
 </head>
 <body>
-    <h5>sudoku solver </h1>
-
+    <h>sudoku solver </h1>
+    <form action="index.php" method="post">
     <table id="sudoku">
 	<tbody>
-        <?php foreach($board->board as $row):?>
+        
+        <?php for($row=0;$row<=8;$row++):?>
 		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
+            <?php for($col=0;$col<=8;$col++):?>
+            <td>
+                <input type="text" name=<?=$row.$col?> 
+                value= "<?php if(isset($_POST['go'])){
+                    echo $board->solvedBoard[$row][$col];
+                }else
+                if ($board->board[$row][$col]!==0) {
+                echo $board->board[$row][$col];
+                }?>
+                "/>
+            
+            </td>
+            <?php endfor?>
 		</tr>
-        <?php endforeach?>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
-		<tr>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-			<td><input type="text" /></td>
-		</tr>
+        <?php endfor?>
+		
 	</tbody>
 </table>
+<input type="submit" value="Go!" name="go">
+</form>
 
 </body>

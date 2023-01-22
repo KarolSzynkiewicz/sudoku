@@ -45,19 +45,32 @@ class Board
         }
     }
 
-    function run(){
-        if(isset($_POST['go']))
-        {
+    function setAndRun(){ 
+        if(isset($_POST['go'])){
+            foreach ($_POST as $key => $value){
+                $value=intval($value);
+
+                if ($key!=='go'){
+                $cell=(str_split($key));
+                $row= $cell[0];
+                $col=$cell[1];
+
+                $this->board[$row][$col]= $value;              
+                }
+             
+            }
+
+
         ($this->solve($this->board));
         } 
 
+    function CheckData($board){
+        //check if inputs are valid
+        //check if there is any empty inputs // to be coded
     }
 
+    }
+
+
+
 }
-
-
-
-
-
-?>
-

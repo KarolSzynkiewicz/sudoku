@@ -1,7 +1,7 @@
 <?php
 include_once('board.php');
 $board = new board;
-$board->run();
+$board->SetAndRun();
 
 
 

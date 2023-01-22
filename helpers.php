@@ -1,6 +1,5 @@
 <?php
 
-
 $FirstEmptyCell = function ($board) {
 
 for ($row = 0; $row <= 8; $row++) {

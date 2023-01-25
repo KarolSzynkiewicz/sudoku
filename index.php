@@ -1,8 +1,10 @@
 <?php
 include_once('board.php');
 $board = new board;
-$board->SetAndRun();
 
+if (isset ($_POST)){
+    $board->SetAndRun();
+}
 
 
 ?>
@@ -22,7 +24,7 @@ $board->SetAndRun();
             <?php for($col=0;$col<=8;$col++):?>
             <td>
                 <input type="text" name=<?=$row.$col?> 
-                value= "<?php if(isset($_POST['go'])){
+                value= "<?php if(isset($_POST['go']) && (count($board->solvedBoard)>0)){
                     echo $board->solvedBoard[$row][$col];
                 }else
                 if ($board->board[$row][$col]!==0) {
